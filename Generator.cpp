@@ -1,66 +1,48 @@
 #include <iostream>
 #include <fstream>
 #include <random>
-#include <string>
+#include <cstring>
 
-enum SizeOption {
-    SMALL,
-    MEDIUM,
-    LARGE
-};
+using namespace std;
 
-SizeOption getSizeOption(const std::string& sizeStr) {
-    if (sizeStr == "SMALL") return SMALL;
-    if (sizeStr == "MEDIUM") return MEDIUM;
-    if (sizeStr == "LARGE") return LARGE;
-    throw std::invalid_argument("Invalid size option");
-}
-
-std::size_t getFileSize(SizeOption size) {
-    switch (size) {
-        case SMALL: return 512 * 1024 * 1024; // 512 MB
-        case MEDIUM: return 1024 * 1024 * 1024; // 1 GB
-        case LARGE: return 2048 * 1024 * 1024; // 2 GB
-        default: throw std::invalid_argument("Invalid size option");
-    }
-}
-
-void generateBinaryFile(const std::string& filePath, std::size_t sizeInBytes) {
-    std::ofstream outFile(filePath, std::ios::binary);
-    if (!outFile) {
-        throw std::ios_base::failure("Failed to open output file");
+void generate_file(const string & size, const string & output_path) {
+    size_t num_integers;
+    if (size == "SMALL") {
+        num_integers = (512 * 1024 * 1024) / sizeof(int);
+    } else if (size == "MEDIUM") {
+        num_integers = (1 * 1024 * 1024 * 1024) / sizeof(int);
+    } else if (size == "LARGE") {
+        num_integers = (2 * 1024 * 1024 * 1024) / sizeof(int);
+    } else {
+        cerr << "Invalid size parameter. Use SMALL, MEDIUM, or LARGE." << endl;
+        return;
     }
 
-    std::random_device rd;
-    std::mt19937 mt(rd());
-    std::uniform_int_distribution<int> dist(std::numeric_limits<int>::min(), std::numeric_limits<int>::max());
+    random_device rd;
+    mt19937 gen(rd());
+    uniform_int_distribution<int> dist;
 
-    std::size_t numIntegers = sizeInBytes / sizeof(int);
-    for (std::size_t i = 0; i < numIntegers; ++i) {
-        int randomInt = dist(mt);
-        outFile.write(reinterpret_cast<const char*>(&randomInt), sizeof(randomInt));
+    ofstream outfile(output_path, ios::binary);
+    if (!outfile) {
+        cerr << "Error opening file for writing." << endl;
+        return;
     }
-}
+
+    for (size_t i = 0; i < num_integers; ++i) {
+        int random_number = dist(gen);
+        outfile.write(reinterpret_cast<const char*>(&random_number), sizeof(int));
+    }
+    outfile.close();
+    cout << "File generated successfully: " << output_path << endl;
+}//generate_file
 
 int main(int argc, char* argv[]) {
-    if (argc != 5) {
-        std::cerr << "Usage: " << argv[0] << " -size <SIZE> -output <OUTPUT FILE PATH>\n";
+    if (argc != 5 || strcmp(argv[1], "--size") != 0 || strcmp(argv[3], "--output") != 0) {
+        cerr << "Use: .\generator --size <SIZE> --output <OUTPUT FILE PATH>" << endl;
         return 1;
     }
-
-    std::string sizeStr = argv[2];
-    std::string outputFilePath = argv[4];
-
-    try {
-        SizeOption sizeOption = getSizeOption(sizeStr);
-        std::size_t fileSize = getFileSize(sizeOption);
-        generateBinaryFile(outputFilePath, fileSize);
-        std::cout << "File generated successfully: " << outputFilePath << "\n";
-    } catch (const std::exception& e) {
-        std::cerr << "Error: " << e.what() << "\n";
-        return 1;
-    }
-
+    string size = argv[2];
+    string output_path = argv[4];
+    generate_file(size, output_path);
     return 0;
-}
-
+}//Main
