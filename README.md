@@ -15,7 +15,7 @@ g++ -o sorter sorter.cpp PagedArray.cpp
 
 ### Ejecucion
 
-Generator: .\generator --size <SIZE> --output <OUTPUT FILE PATH>
+Generator: .\generator --size "<SIZE>" --output "<OUTPUT FILE PATH>"
 Donde <SIZE> puede ser SMALL, MEDIUM o LARGE.
 Y <OUTPUT FILE PATH> es la direccion donde se va a guardar
 
