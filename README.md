@@ -15,12 +15,12 @@ g++ -o sorter sorter.cpp PagedArray.cpp
 
 ### Ejecucion
 
-Generator: .\generator --size "SIZE" --output "OUTPUT FILE PATH"
+Generator: .\generator --size "SIZE" --output "OUTPUT FILE PATH".
 Donde "SIZE" puede ser SMALL, MEDIUM o LARGE.
-Y "OUTPUT FILE PATH" es la direccion donde se va a guardar
+Y "OUTPUT FILE PATH" es la direccion donde se va a guardar.
 
 
-Sorter: .\sorter --input "INPUT FILE PATH" --output "OUTPUT FILE PATH" --alg "ALGORITHM"
-Donde "ALGORITHM" puede ser QS (Quick Sort), IS (Insertion Sort) o BS (Bubble Sort),
-"INPUT FILE PATH" la direccion donde van a estar los archivos
-Y "OUTPUT FILE PATH" es la direccion donde se va a guardar
+Sorter: .\sorter --input "INPUT FILE PATH" --output "OUTPUT FILE PATH" --alg "ALGORITHM".
+Donde "ALGORITHM" puede ser QS (Quick Sort), IS (Insertion Sort) o BS (Bubble Sort).
+"INPUT FILE PATH" la direccion donde van a estar los archivos.
+Y "OUTPUT FILE PATH" es la direccion donde se va a guardar.
